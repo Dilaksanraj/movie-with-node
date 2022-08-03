@@ -134,7 +134,7 @@ const PopularMovie = () => {
         return (
             <div className="col-12 lg:col-2 md:col-3 sm:col-6" style={{ cursor: 'pointer' }} onClick={event => {
                 history.push({
-                    pathname: '/movie',
+                    pathname: `/movie/${data._id}`,
                     state:data
                     
                 })
@@ -161,7 +161,7 @@ const PopularMovie = () => {
         return (
             <div className="col-12 lg:col-2 md:col-3 sm:col-6" style={{ cursor: 'pointer' }} onClick={event => {
                 history.push({
-                    pathname: '/movie',
+                    pathname: `/movie/${data._id}`,
                     state:data
                 })
             }}>

@@ -29,15 +29,24 @@ const MovieDetailsView = () => {
         <>
             <div className="grid" style={{ marginRight: '0px' }}>
 
-            <div className='col-12'>
+                {history.location.state.link &&
+                    <div className='col-12'>
 
-<iframe width="100%" 
-    height="720" 
-    src={history.location.state.link} 
-    title="VIKRAM - Official Trailer | Kamal Haasan | VijaySethupathi, FahadhFaasil | LokeshKanagaraj | Anirudh" 
-    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-    allowfullscreen ></iframe>
-</div>
+                        <iframe width="100%"
+                            height="720"
+                            src={history.location.state.link}
+                            title="VIKRAM - Official Trailer | Kamal Haasan | VijaySethupathi, FahadhFaasil | LokeshKanagaraj | Anirudh"
+                            frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen ></iframe>
+                    </div>
+                }
+
+                {!history.location.state.link &&
+                    <div className='col-12'>
+
+                        <iframe width="1280" height="720" src="https://www.youtube.com/embed/fb5ELWi-ekk" title="Jurassic World Dominion - Official Trailer [HD]" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                    </div>
+                }
 
                 <div className="col-12">
                     <BlockViewer header="Hero" code={block1}>
@@ -51,13 +60,13 @@ const MovieDetailsView = () => {
                                 </section>
                             </div>
                             <div className="col-12 md:col-6 overflow-hidden">
-                                <img src={history.location.state.poster} alt="hero-1" className="block" style={{ clipPath: 'polygon(8% 0, 100% 0%, 100% 100%, 0 100%)', height: '400px', width: '50%', float:'right' }} />
+                                <img src={history.location.state.poster} alt="hero-1" className="block" style={{ clipPath: 'polygon(8% 0, 100% 0%, 100% 100%, 0 100%)', height: '400px', width: '50%', float: 'right' }} />
                             </div>
                         </div>
                     </BlockViewer>
                 </div>
 
-                
+
 
             </div></>
     );

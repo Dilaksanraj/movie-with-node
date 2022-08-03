@@ -225,12 +225,21 @@ const App = () => {
                     <PopularMovie></PopularMovie>
                     }
                     
-                    <Route path="/movie" component={MovieDetailsView} />
+                    
+                </>
+            }
+
+            {!isCommonRoute && currentUrl.length >18&&
+                <>
+                <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode} isCommon={isCommonRoute} isAuth={isAutheticated}
+                mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
+                
+                <Route path="/movie/:id" component={MovieDetailsView} />
                 </>
             }
 
 
-            {!isCommonRoute && <div className={wrapperClass} onClick={onWrapperClick}>
+            {!isCommonRoute && currentUrl.length <18 && <div className={wrapperClass} onClick={onWrapperClick}>
                 <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
 
                 <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode}
