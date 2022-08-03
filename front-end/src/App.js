@@ -16,7 +16,7 @@ import FileDemo from './components/FileDemo';
 import FloatLabelDemo from './components/FloatLabelDemo';
 import FormLayoutDemo from './components/FormLayoutDemo';
 import InputDemo from './components/InputDemo';
-import ListDemo from './components/ListDemo';
+import PopularMovie from './components/ListDemo';
 import MenuDemo from './components/MenuDemo';
 import MessagesDemo from './components/MessagesDemo';
 import MiscDemo from './components/MiscDemo';
@@ -28,6 +28,9 @@ import TreeDemo from './components/TreeDemo';
 import InvalidStateDemo from './components/InvalidStateDemo';
 import BlocksDemo from './components/BlocksDemo';
 import IconsDemo from './components/IconsDemo';
+
+import MovieListAdmin from './components/MovieList';
+import UserListAdmin from './components/UserList';
 
 import Crud from './pages/Crud';
 import EmptyPage from './pages/EmptyPage';
@@ -49,6 +52,8 @@ import Login from './common/Login';
 import Register from './common/Register';
 import { AppsConst } from './shared/AppsConst';
 import Home from './common/Home';
+import MovieDetailsView from './components/MovieDetailsView';
+import './assets/css/common.css';
 
 const App = () => {
     const [layoutMode, setLayoutMode] = useState('static');
@@ -61,6 +66,8 @@ const App = () => {
     const [mobileTopbarMenuActive, setMobileTopbarMenuActive] = useState(false);
     const copyTooltipRef = useRef();
     const location = useLocation();
+
+    // const [isAutheticated, setIsAutheticated] = useState(AppsConst.token ? true : false);
 
     PrimeReact.ripple = true;
 
@@ -188,29 +195,39 @@ const App = () => {
 
     const envirment = 'DEV';
     const currentUrl = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
-    const isCommonRoute = AppsConst.commonUrl.find(e => e.url == `/${currentUrl}`)? true : false;
+    const isCommonRoute = AppsConst.commonUrl.find(e => e.url == `/${currentUrl}`) ? true : false;
+    const isAutheticated = localStorage.getItem(AppsConst.token) ? true : false;
     console.log(currentUrl);
     console.log(isCommonRoute);
 
     return (
         <>
             {
-                isCommonRoute && <>
-                <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode} isCommon={isCommonRoute}
-                    mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
-                <div className="layout-main-container">
-                <div className="layout-main">
-                    {/* <EmptyPage></EmptyPage> */}
+                isCommonRoute && !isAutheticated && <>
+                    <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode} isCommon={isCommonRoute} isAuth={isAutheticated}
+                        mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
+                    <div className="layout-main-container">
+                        <div className="layout-main">
+                            {/* <EmptyPage></EmptyPage> */}
 
-                    <Route path="/login" component={Login} />
-                    <Route path="/register" component={Register} />
-                    <Route path="/home" component={Home} />
-                </div>
-                </div>
+                            <Route path="/login" component={Login} />
+                            <Route path="/register" component={Register} />
+                            <Route path="/home" component={Home} />
+                        </div>
+                    </div>
                 </>
-                
             }
-
+            {isCommonRoute && isAutheticated &&
+                <>
+                    <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode} isCommon={isCommonRoute} isAuth={isAutheticated}
+                        mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
+                    {currentUrl !== 'movie'&&
+                    <PopularMovie></PopularMovie>
+                    }
+                    
+                    <Route path="/movie" component={MovieDetailsView} />
+                </>
+            }
 
 
             {!isCommonRoute && <div className={wrapperClass} onClick={onWrapperClick}>
@@ -219,7 +236,7 @@ const App = () => {
                 <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode}
                     mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
                 <div className="layout-sidebar" onClick={onSidebarClick}>
-                    <AppMenu model={envirment === 'DEV'?NavigationDev : Navigation} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
+                    <AppMenu model={envirment === 'DEV' ? NavigationDev : Navigation} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
                 </div>
 
 
@@ -232,7 +249,7 @@ const App = () => {
                         <Route path="/invalidstate" component={InvalidStateDemo} />
                         <Route path="/button" component={ButtonDemo} />
                         <Route path="/table" component={TableDemo} />
-                        <Route path="/list" component={ListDemo} />
+                        <Route path="/list" component={PopularMovie} />
                         <Route path="/tree" component={TreeDemo} />
                         <Route path="/panel" component={PanelDemo} />
                         <Route path="/overlay" component={OverlayDemo} />
@@ -248,10 +265,17 @@ const App = () => {
                         <Route path="/crud" component={Crud} />
                         <Route path="/empty" component={EmptyPage} />
                         <Route path="/documentation" component={Documentation} />
+
+                        {/* admin */}
+                        <Route path="/manage-movie" component={MovieListAdmin} />
+                        <Route path="/manage-user" component={UserListAdmin} />
+                        
                     </div>
 
                     <AppFooter layoutColorMode={layoutColorMode} />
                 </div>
+
+                
 
                 <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange}
                     layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />

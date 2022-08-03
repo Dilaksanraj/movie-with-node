@@ -1,5 +1,5 @@
 
- export const Navigation = [
+export const Navigation = [
     {
         label: 'Home',
         items: [{
@@ -99,29 +99,23 @@
 export const NavigationDev = [
     {
         label: 'Home',
-        items: [{
-            label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/dashboard'
-        }]
-    },
-    {
-        label: 'UI Components', icon: 'pi pi-fw pi-sitemap',
         items: [
-            { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/formlayout' },
-            { label: 'Input', icon: 'pi pi-fw pi-check-square', to: '/input' },
-            { label: "Float Label", icon: "pi pi-fw pi-bookmark", to: "/floatlabel" },
-            { label: "Invalid State", icon: "pi pi-fw pi-exclamation-circle", to: "invalidstate" },
-            { label: 'Button', icon: 'pi pi-fw pi-mobile', to: '/button' },
-            { label: 'Table', icon: 'pi pi-fw pi-table', to: '/table' },
-            { label: 'List', icon: 'pi pi-fw pi-list', to: '/list' },
-            { label: 'Tree', icon: 'pi pi-fw pi-share-alt', to: '/tree' },
-            { label: 'Panel', icon: 'pi pi-fw pi-tablet', to: '/panel' },
-            { label: 'Overlay', icon: 'pi pi-fw pi-clone', to: '/overlay' },
-            { label: "Media", icon: "pi pi-fw pi-image", to: "/media" },
-            { label: 'Menu', icon: 'pi pi-fw pi-bars', to: '/menu' },
-            { label: 'Message', icon: 'pi pi-fw pi-comment', to: '/messages' },
-            { label: 'File', icon: 'pi pi-fw pi-file', to: '/file' },
-            { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', to: '/chart' },
-            { label: 'Misc', icon: 'pi pi-fw pi-circle-off', to: '/misc' },
+            {
+                label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/dashboard'
+            },
+            {
+                label: 'Movie', icon: 'pi pi-fw pi-youtube', to: '/manage-movie'
+            },
+            {
+                label: 'User', icon: 'pi pi-fw pi-user', to: '/manage-user'
+            },
+            {
+                label: 'Message', icon: 'pi pi-fw pi-envelope', to: '/message'
+            },
+            {
+                label: 'Setting', icon: 'pi pi-fw pi-sliders-h', to: '/setting' 
+            },
         ]
-    }
+    },
+
 ];

@@ -1,8 +1,8 @@
 {
     "data":[
         {
-            "itemImageSrc": "demo/images/galleria/galleria1.jpg",
-            "thumbnailImageSrc": "demo/images/galleria/galleria1s.jpg",
+            "itemImageSrc": "https://www.telerama.fr/sites/tr_master/files/ea70fd04-d87a-40ef-8fad-ba3cce3d94ea_2.jpg",
+            "thumbnailImageSrc": "https://www.telerama.fr/sites/tr_master/files/ea70fd04-d87a-40ef-8fad-ba3cce3d94ea_2.jpg",
             "alt": "Description for Image 1",
             "title": "Title 1"
         },

@@ -4,9 +4,12 @@ import classNames from 'classnames';
 import { AppsConst } from './shared/AppsConst';
 import EmptyPage from './pages/EmptyPage';
 import { NavLink } from 'react-router-dom';
+import { clearAuth } from './common/service/auth.service';
 
 
 export const AppTopbar = (props) => {
+
+    const isAuth = localStorage.getItem(AppsConst.token) ? true : false;
 
     return (
         <>
@@ -29,12 +32,26 @@ export const AppTopbar = (props) => {
 
                 <ul className={classNames("layout-topbar-menu lg:flex origin-top", { 'layout-topbar-menu-mobile-active': props.mobileTopbarMenuActive })}>
                     {
-                        !props.isCommon &&
+                        !isAuth &&
                         <>
                             <li>
                                 <button className="p-link layout-topbar-button" onClick={props.onMobileSubTopbarMenuClick}>
                                     <NavLink className="p-ripple" activeClassName="router-link-active router-link-exact-active" to='/login'>
-                                        <i className="pi pi-calendar" />
+                                        <i className="pi pi-user" />
+                                        <span>Login</span>
+                                    </NavLink>
+
+                                </button>
+                            </li>
+                        </>
+                    }
+                    {
+                        isAuth &&
+                        <>
+                            <li>
+                                <button className="p-link layout-topbar-button" onClick={props.onMobileSubTopbarMenuClick}>
+                                    <NavLink className="p-ripple" activeClassName="router-link-active router-link-exact-active" to='/home'>
+                                        <i className="pi pi-star" />
                                         <span>Events</span>
                                     </NavLink>
 
@@ -43,23 +60,26 @@ export const AppTopbar = (props) => {
                             <li>
                                 <button className="p-link layout-topbar-button" onClick={props.onMobileSubTopbarMenuClick}>
 
-                                    <NavLink className="p-ripple" activeClassName="router-link-active router-link-exact-active" to='/login'>
+                                    <NavLink className="p-ripple" activeClassName="router-link-active router-link-exact-active" to='/home'>
                                         <i className="pi pi-cog" />
                                         <span>Settings</span>
                                     </NavLink>
 
                                 </button>
-                            </li></>
-                    }
-                    <li>
-                        <button className="p-link layout-topbar-button" onClick={props.onMobileSubTopbarMenuClick}>
-                            <NavLink className="p-ripple" activeClassName="router-link-active router-link-exact-active" to='/login'>
-                                <i className="pi pi-user" />
-                                <span>Profile</span>
-                            </NavLink>
+                            </li>
 
-                        </button>
-                    </li>
+                            <li>
+                                <button className="p-link layout-topbar-button" onClick={clearAuth}>
+                                    <NavLink className="p-ripple" activeClassName="router-link-active router-link-exact-active" to='/login'>
+                                        <i className="pi pi-lock" />
+                                        <span>Logout</span>
+                                    </NavLink>
+
+                                </button>
+                            </li>
+                        </>
+                    }
+
                 </ul>
             </div>
         </>

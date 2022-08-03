@@ -4,31 +4,73 @@ import { Chip } from 'primereact/chip';
 import { InputText } from 'primereact/inputtext';
 import { Checkbox } from 'primereact/checkbox';
 import BlockViewer from '../BlockViewer';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { register } from './service/auth.service';
+import { Calendar } from 'primereact/calendar';
 
 const Register = () => {
 
-    const [state, setState] = React.useState({
-        email: "",
-        password: ""
-      })
+    const [checked, setChecked] = useState(false);
+    const [disabled, setDisabled] = useState(true);
+    const [fName, setFirstName] = useState('');
+    const [lName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [cPassword, setCPassword] = useState('');
+    const [dob, setDob] = useState(null);
 
     const [msg, setMsg] = useState('')
 
-    function handleChange(evt) {
-        const value = evt.target.value;
-        setState({
-          ...state,
-          [evt.target.name]: value
-        });
-      }
+    const history = useHistory()
+    async function handleSubmit(event) {
 
-    const [checked, setChecked] = useState(false);
+        event.preventDefault();
 
-    const submit = ()=> {
-        console.log('wel come all good');
+        const data = {
+            email: email,
+            password: password,
+            first_name: fName,
+            last_name: lName,
+            dob: `${new Date(dob).getDate()}-${new Date(dob).getMonth()}-${new Date(dob).getFullYear()}`
+        };
+
+        const res = await register(data);
+
+        if (res.data) {
+            //   context.updateAuth(true)
+            history.push('/login')
+        } else {
+            
+            console.log('error');
+        }
+
+        // 👇️ clear all input values in the form
+        setEmail('');
+        setPassword('');
+        setCPassword('');
+        setFirstName('');
+        setLastName('');
+        setDob(null);
+        setCPassword('');
+
+    };
+
+    function buttonValidation() {
+
+        console.log('working');
+        if (fName !== '' && lName !== '' && email !== '' && password !== '' && cPassword !== '' && dob !== '') {
+            setDisabled(false)
+        }
+
+        else{
+
+            setDisabled(true)
+        }
+        
     }
-      
+
+
+
 
     return (
 
@@ -46,17 +88,52 @@ const Register = () => {
                 </div>
 
                 <div>
-                    <label htmlFor="email1" className="block text-900 font-medium mb-2">Username</label>
+                    <label htmlFor="first name" className="block text-900 font-medium mb-2">Fisrst name</label>
+                    <InputText id="first_name" type="text" className="w-full mb-3"
+                        onChange={event => {
+                            setFirstName(event.target.value)
+                            buttonValidation()
+                        }}
+                        value={fName} />
+
+                    <label htmlFor="last name" className="block text-900 font-medium mb-2">Last name</label>
+                    <InputText id="last_name" type="text" className="w-full mb-3"
+                        onChange={event => {
+                            setLastName(event.target.value)
+                            buttonValidation()
+                        }}
+                        value={lName} />
+
+                    <label htmlFor="email1" className="block text-900 font-medium mb-2">Email</label>
                     <InputText id="email1" type="text" className="w-full mb-3"
-                        value={state.email}
-                        name="email"
-                        onChange={handleChange}/>
+                        onChange={event => {
+                            setEmail(event.target.value)
+                            buttonValidation()
+                        }}
+                        value={email} />
+
+                    <label htmlFor="password1" className="block text-900 font-medium mb-2">Date of birth</label>
+                    <Calendar style={{ width: '100%' }} inputId="calendar" value={dob}
+                        onChange={event => {
+                            setDob(event.target.value)
+                            buttonValidation()
+                        }} className="p-invalid" showIcon />
 
                     <label htmlFor="password1" className="block text-900 font-medium mb-2">Password</label>
                     <InputText id="password1" type="password" className="w-full mb-3"
-                        value={state.password}
-                        name="password"
-                        onChange={handleChange}/>
+                        onChange={event => {
+                            setPassword(event.target.value)
+                            buttonValidation()
+                        }}
+                        value={password} />
+
+                    <label htmlFor="password1" className="block text-900 font-medium mb-2"> Confirm assword</label>
+                    <InputText id="password1" type="password" className="w-full mb-3"
+                        onChange={event => {
+                            setCPassword(event.target.value)
+                            buttonValidation()
+                        }}
+                        value={cPassword} />
 
                     <div className="flex align-items-center justify-content-between mb-6">
                         <div className="flex align-items-center">
@@ -66,8 +143,9 @@ const Register = () => {
                         <button className="p-link font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot password?</button>
                     </div>
 
-                    <Button label="Sign In" icon="pi pi-user" className="w-full" 
-                    onClick={submit}/>
+                    <Button label="Sign In" icon="pi pi-user" className="w-full"
+                        disabled={disabled}
+                        onClick={handleSubmit} />
                 </div>
             </div>
         </BlockViewer>

@@ -18,11 +18,11 @@ const HomeContentCell = (props) => {
             <div className="col-12 md:col-12 mb-4 overflow-hidden">
                 <span className="p-3 shadow-2 mb-3 inline-block surface-card overflow-hidden" style={{ borderRadius: '10px' }}>
                     {props.data.type == AppsConst.mediaType.Video &&
-                        <video lassName="md:ml-auto block md:h-full" data-uia="our-story-card-video" autoplay="" playsinline="" muted="" loop="" source src={props.data.url} type="video/mp4"></video>
+                        <video style={{width:'650px'}} lassName="md:ml-auto block md:h-full" data-uia="our-story-card-video" autoplay="" playsinline="" muted="" loop="" source src={props.data.url} type="video/mp4"></video>
                     }
 
                     {props.data.type == AppsConst.mediaType.img &&
-                        <img lassName="md:ml-auto block md:h-full" autoplay="" playsinline="" muted="" loop="" source src={props.data.url} type="video/mp4"></img>
+                        <img  style={{width:'650px'}} lassName="md:ml-auto block md:h-full" autoplay="" playsinline="" muted="" loop="" source src={props.data.url} type="video/mp4"></img>
                     }
 
 
