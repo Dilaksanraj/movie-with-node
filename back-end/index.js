@@ -45,6 +45,12 @@ app.use('/movie',MovieApi)
 app.use('/comment',CommentsApi)
 app.use('/rate',RateApi)
 
+app.use(express.static(path.join(__dirname, "/front-end/build")));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/front-end/build', 'index.html'));
+});
+
 
 app.listen(process.env.PORT, () => {
     console.log('Server running on http://127.0.0.1:' + process.env.PORT)
