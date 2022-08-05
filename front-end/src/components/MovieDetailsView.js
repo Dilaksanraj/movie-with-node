@@ -6,6 +6,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { createComments, getAllComments, getAllMovieComments } from '../service/Comments.service';
 import { AppsConst } from '../shared/AppsConst';
 import { getAllMovieList } from '../service/Movie.service';
+import { Rating } from 'primereact/rating';
 
 const MovieDetailsView = () => {
 
@@ -16,6 +17,8 @@ const MovieDetailsView = () => {
     const history = useHistory()
     const [comments, setComment] = useState('');
     const [allComments, setAllComments] = useState([]);
+    const [movie, setCurrentMovie] = useState([]);
+    const [ratingValue, setRatingValue] = useState(null);
 
     const block1 = `
 <div className="grid grid-nogutter surface-section text-800">
@@ -38,7 +41,7 @@ const MovieDetailsView = () => {
     useEffect(() => {
         const getAllComments = async () => {
 
-            const comments = await getAllMovieComments(history.location.state._id);
+            const comments = await getAllMovieComments(currentMovieId);
 
             // filter comment for current movie
             const filterComment = comments.filter(function(item){
@@ -46,6 +49,23 @@ const MovieDetailsView = () => {
             });
             setAllComments(filterComment);
         }
+
+        // getMovie
+        const getAllMovie = async () => {
+
+            const comments = await getAllMovieList();
+
+            // filter comment for current movie
+            const currentMovie = comments.find(function(item){
+                return item._id == currentMovieId
+            });
+
+            setCurrentMovie(currentMovie);
+
+            console.log('current movie', currentMovie);
+        }
+
+        getAllMovie();
         getAllComments()
     }, []);
 
@@ -56,9 +76,8 @@ const MovieDetailsView = () => {
         const data = {
             text: comments,
             user_id: localStorage.getItem(AppsConst.authId),
-            movie_id: history.location.state._id,
+            movie_id: movie._id,
         };
-
         const res = await createComments(data);
 
 
@@ -81,18 +100,18 @@ const MovieDetailsView = () => {
         <>
             <div className="grid" style={{ marginRight: '0px' }}>
 
-                {history.location.state.link &&
+                {movie.link &&
                     <div className='col-12'>
                         <iframe width="100%"
                             height="720"
-                            src={history.location.state.link}
+                            src={movie.link ? movie.link : ''}
                             title="VIKRAM - Official Trailer | Kamal Haasan | VijaySethupathi, FahadhFaasil | LokeshKanagaraj | Anirudh"
                             frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen ></iframe>
                     </div>
                 }
 
-                {!history.location.state.link &&
+                {!movie.link &&
                     <div className='col-12'>
 
                         <iframe width="100%" height="720" src="https://www.youtube.com/embed/fb5ELWi-ekk" title="Jurassic World Dominion - Official Trailer [HD]" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
@@ -102,16 +121,24 @@ const MovieDetailsView = () => {
                 <div className="col-12">
                     <BlockViewer header="Hero" code={block1}>
                         <div className="grid grid-nogutter surface-section text-800">
-                            <div className="col-12 md:col-6 p-6 text-center md:text-left flex align-items-center ">
+                            <div className="col-12 md:col-8 p-6 text-center md:text-left flex align-items-center ">
                                 <section>
-                                    <div className="text-6xl text-primary font-bold mb-3">{history.location.state.title}</div>
-                                    <p>{history.location.state.desc}</p>
+                                    <div className="text-6xl text-primary font-bold mb-3">{movie.title}</div>
+                                    <p style={{fontSize: '12px'}}>{movie.desc}</p>
                                     <Button label="Learn More" type="button" className="mr-3 p-button-raised"></Button>
                                     <Button label="Watch video" type="button" className="p-button-outlined"></Button>
+
+                                    <div style={{margin: '12px', display:'flex'}}>
+                                    <Rating value={ratingValue} onChange={(e) => setRatingValue(e.value)} />
+                                    <a style={{marginLeft: '12px', cursor:'pointer'}}>update</a>
+                                    </div>
                                 </section>
+
+                                
+
                             </div>
-                            <div className="col-12 md:col-6 overflow-hidden">
-                                <img src={history.location.state.poster} alt="hero-1" className="block" style={{ clipPath: 'polygon(8% 0, 100% 0%, 100% 100%, 0 100%)', height: '400px', width: '50%', float: 'right' }} />
+                            <div className="col-12 md:col-4 overflow-hidden">
+                                <img src={movie.poster} alt="hero-1" className="block" style={{ clipPath: 'polygon(8% 0, 100% 0%, 100% 100%, 0 100%)', height: '400px', width: '70%', float: 'right' }} />
                             </div>
                         </div>
                     </BlockViewer>
@@ -134,6 +161,7 @@ const MovieDetailsView = () => {
                                 <span style={{ fontSize: '12px', margin: '6px' }}>{`${new Date(element.created_at).getDate()}-${new Date(element.created_at).getMonth()}-${new Date(element.created_at).getFullYear()}`}</span>
                                 <span style={{ fontSize: '16px', margin: '6px' }}><a>like</a></span>
                                 <span style={{ fontSize: '16px', margin: '6px' }}><a>replay</a></span>
+                                <span style={{ fontSize: '16px', margin: '6px' , color:'red'}}><a style={{color:'red'}}>{element.user_id._id == localStorage.getItem(AppsConst.authId)? 'delete' : ''}</a></span>
                                 </div>
                             </div>
 

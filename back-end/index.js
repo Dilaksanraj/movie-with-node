@@ -9,6 +9,7 @@ const AppsConst = require('./share/AppsConst')
 const AuthApi = require('./api/auth.route')
 const MovieApi = require('./api/movie.route')
 const CommentsApi = require('./api/comment.route');
+const RateApi = require('./api/rate.route')
 
 // get db connection
 require("./config/database").connect();
@@ -42,6 +43,7 @@ app.get('/', function (request, response) {
 app.use('/',AuthApi)
 app.use('/movie',MovieApi)
 app.use('/comment',CommentsApi)
+app.use('/rate',RateApi)
 
 const PORT = 4500
 app.listen(PORT, () => {

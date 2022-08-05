@@ -3,34 +3,33 @@ const bcrypt = require('bcrypt')
 const jwt = require("jsonwebtoken")
 require('dotenv').config()
 
-const commentModel = require('../models/comments.model')
-const userModel = require('../models/userModel')
+const ratingModel = require('../models/rating')
 const AppsConst = require('../share/AppsConst')
 const Response = require('../share/Response')
 
 const Router = express.Router()
 
-Router.post('/create-comment', async (req, res) => {
-    console.log(req.body);
+Router.post('/create-rate', async (req, res) => {
+    
     const movie_id = req.body.movie_id;
     const user_id = req.body.user_id;
-    const text = req.body.text;
+    const rate = req.body.rate;
 
     try {
-        const Comment = new commentModel({
-            comment: text,
+        const Rate = new ratingModel({
+            rate: rate,
             user_id: user_id,
             movie_id: movie_id
         })
 
-        const movie = await Comment.save()
+        const rate = await Rate.save()
 
 
-        const get_all_comments = await commentModel.find({}).populate('user_id')
+        const get_all_rates = await ratingModel.find({}).populate('user_id').populate('movie_id')
 
         return res.status(AppsConst.AppsConst.RequestType.CODE_200).json({
             message: Response.success_create,
-            data: get_all_comments
+            data: get_all_rates
         })
 
     } catch (error) {
@@ -45,15 +44,14 @@ Router.post('/create-comment', async (req, res) => {
 })
 
 
-Router.get('/get-all-comments', async (req, res) => {
+Router.get('/get-all-rate', async (req, res) => {
 
     try {
-        console.log('get all comments');
 
         // loading comment with created_by (user_id)
-        const comments = await commentModel.find({}).populate('user_id')
+        const rating = await ratingModel.find({}).populate('user_id')
 
-        if (!comments) {
+        if (!rating) {
 
             return res.status(AppsConst.AppsConst.RequestType.CODE_200).json({
                 message: 'No data',
@@ -61,19 +59,16 @@ Router.get('/get-all-comments', async (req, res) => {
 
             })
         }
-
-        const commentsArray = [];
         
         return res.status(AppsConst.AppsConst.RequestType.CODE_200).json({
             message: Response.success_request,
-            data: comments
+            data: rating
 
         })
 
     }
     catch (err) {
 
-        console.log(err);
         return res.status(AppsConst.AppsConst.RequestType.CODE_500).json({
             message: err.message,
             data: []

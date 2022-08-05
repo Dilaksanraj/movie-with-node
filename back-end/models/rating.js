@@ -10,7 +10,7 @@ const rateSchema = new mongoose.Schema({
         
         type: mongoose.Types.ObjectId,
         ref: 'Movie'
-    }
+    },
 
 }, {
     timestamps: {
