@@ -93,8 +93,6 @@ Router.post('/login', async (req, res) => {
                 }
             );
 
-            console.log(token);
-
             return res.status(AppsConst.AppsConst.RequestType.CODE_200)
                 .json({
                     message: Response.success_login,
@@ -130,5 +128,53 @@ Router.get('/auth-user', async (req, res) => {
 
     return res.status(AppsConst.AppsConst.RequestType.CODE_500).json({ "msg": "You are not authenticated !" })
 })
+
+Router.get('/get-all-user', async (req, res) => {
+
+    try {
+        const user = await userModel.find({})
+
+        if (!user) {
+
+            return res.status(AppsConst.AppsConst.RequestType.CODE_200).json({
+                message: 'No data',
+                data: []
+
+            })
+        }
+
+        return res.status(AppsConst.AppsConst.RequestType.CODE_200).json({
+            message: Response.success_request,
+            data: user
+
+        })
+
+    }
+    catch (err) {
+
+        console.log(err);
+        return res.status(AppsConst.AppsConst.RequestType.CODE_500).json({
+            message: err.message,
+            data: []
+
+        })
+
+    }
+
+})
+
+Router.get('/logout', (req, res) => {
+    if (req.session.user) {
+        delete req.session
+    }
+
+    return res.status(AppsConst.AppsConst.RequestType.CODE_200).json({
+        message: Response.success_request,
+        data: []
+
+    })
+})
+
+
 
 module.exports = Router

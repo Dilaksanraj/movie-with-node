@@ -38,6 +38,8 @@ const Login = () => {
 
             localStorage.setItem(AppsConst.isAuth, true);
             localStorage.setItem(AppsConst.token, res.token);
+            localStorage.setItem(AppsConst.authId, res.user._id);
+
 
             if(res.user.type !== 'USER'){
 

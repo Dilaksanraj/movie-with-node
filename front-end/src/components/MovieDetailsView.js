@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from 'primereact/button';
 import BlockViewer from '../BlockViewer';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
+import { InputTextarea } from 'primereact/inputtextarea';
+import { createComments, getAllComments, getAllMovieComments } from '../service/Comments.service';
+import { AppsConst } from '../shared/AppsConst';
+import { getAllMovieList } from '../service/Movie.service';
 
 const MovieDetailsView = () => {
 
+    // get movie id from params
+    const { id } = useParams();
+    const [currentMovieId, setCurrentMovieId] = useState(id);
+
     const history = useHistory()
+    const [comments, setComment] = useState('');
+    const [allComments, setAllComments] = useState([]);
 
     const block1 = `
 <div className="grid grid-nogutter surface-section text-800">
@@ -25,13 +35,54 @@ const MovieDetailsView = () => {
 </div>
     `;
 
+    useEffect(() => {
+        const getAllComments = async () => {
+
+            const comments = await getAllMovieComments(history.location.state._id);
+
+            // filter comment for current movie
+            const filterComment = comments.filter(function(item){
+                return item.movie_id == currentMovieId
+            });
+            setAllComments(filterComment);
+        }
+        getAllComments()
+    }, []);
+
+    async function submit(event) {
+
+        event.preventDefault();
+
+        const data = {
+            text: comments,
+            user_id: localStorage.getItem(AppsConst.authId),
+            movie_id: history.location.state._id,
+        };
+
+        const res = await createComments(data);
+
+
+        if (res.data) {
+
+            const filterComment = res.data.filter(function(item){
+                return item.movie_id == currentMovieId
+            });
+
+            setAllComments(filterComment);
+
+        } else {
+            console.log('error');
+        }
+
+        setComment('');
+    };
+
     return (
         <>
             <div className="grid" style={{ marginRight: '0px' }}>
 
                 {history.location.state.link &&
                     <div className='col-12'>
-
                         <iframe width="100%"
                             height="720"
                             src={history.location.state.link}
@@ -64,6 +115,50 @@ const MovieDetailsView = () => {
                             </div>
                         </div>
                     </BlockViewer>
+                </div>
+
+                <div className='col-12'>
+                    <div className="col-6">
+                        {allComments.map(element =>
+                            <div key={element._id} style={{ borderWidth: '3px', borderColor: 'darkgray', padding: '24px', borderRadius: '20px', fontSize: '18px', margin: '24px', background: '#ffffff' }}>
+                                <img src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png' style={{ width: '30px', height: '30px', float: 'left' }} />
+                                
+                                <p style={{ paddingLeft: '48px', fontSize: '14px'}}>
+                                    <a>{element.user_id.first_name}</a>
+                                </p>
+                                
+                                <p style={{ paddingLeft: '48px', marginBottom: '0px' }}>
+                                    {element.comment}
+                                </p>
+                                <div style={{marginLeft: '42px'}}>
+                                <span style={{ fontSize: '12px', margin: '6px' }}>{`${new Date(element.created_at).getDate()}-${new Date(element.created_at).getMonth()}-${new Date(element.created_at).getFullYear()}`}</span>
+                                <span style={{ fontSize: '16px', margin: '6px' }}><a>like</a></span>
+                                <span style={{ fontSize: '16px', margin: '6px' }}><a>replay</a></span>
+                                </div>
+                            </div>
+
+
+                        )}
+                    </div>
+
+                </div>
+
+                <div className='col-12'>
+                    <div className="col-6" style={{ marginLeft: '24px'}}>
+
+                        <InputTextarea placeholder="Your comment" autoResize rows="3" cols="30" className="w-full mb-3" style={{height:'70px', fontSize:'18px' }}
+                            onChange={event => {
+                                setComment(event.target.value)
+                            }}
+                            value={comments}
+                        />
+                    </div>
+
+                    <div className="flex-1 text-center mb-3 md:text-right col-6">
+                        <div className="font-bold text-2xl">
+                            <Button label="Submit" className="mr-2 mb-2" onClick={submit} ></Button>
+                        </div>
+                    </div>
                 </div>
 
 

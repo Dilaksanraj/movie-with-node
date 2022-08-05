@@ -4,8 +4,13 @@ const morgan = require('morgan')
 const session = require('express-session')
 const cors = require('cors')
 const AppsConst = require('./share/AppsConst')
+
+// routes
 const AuthApi = require('./api/auth.route')
 const MovieApi = require('./api/movie.route')
+const CommentsApi = require('./api/comment.route');
+
+// get db connection
 require("./config/database").connect();
 
 const corsOptions ={
@@ -36,6 +41,7 @@ app.get('/', function (request, response) {
 
 app.use('/',AuthApi)
 app.use('/movie',MovieApi)
+app.use('/comment',CommentsApi)
 
 const PORT = 4500
 app.listen(PORT, () => {

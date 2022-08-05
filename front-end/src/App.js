@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import classNames from 'classnames';
 import { Route, useLocation } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
@@ -54,6 +54,8 @@ import { AppsConst } from './shared/AppsConst';
 import Home from './common/Home';
 import MovieDetailsView from './components/MovieDetailsView';
 import './assets/css/common.css';
+import { LoadingContaxt } from './shared/context/common.context';
+
 
 const App = () => {
     const [layoutMode, setLayoutMode] = useState('static');
@@ -64,8 +66,11 @@ const App = () => {
     const [overlayMenuActive, setOverlayMenuActive] = useState(false);
     const [mobileMenuActive, setMobileMenuActive] = useState(false);
     const [mobileTopbarMenuActive, setMobileTopbarMenuActive] = useState(false);
+    const [isLoading, setLoading] = useState(false);
     const copyTooltipRef = useRef();
     const location = useLocation();
+
+    const providerValue = useMemo(()=> ({isLoading, setLoading}), [isLoading, setLoading]);
 
     // const [isAutheticated, setIsAutheticated] = useState(AppsConst.token ? true : false);
 
@@ -197,9 +202,8 @@ const App = () => {
     const currentUrl = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
     const isCommonRoute = AppsConst.commonUrl.find(e => e.url == `/${currentUrl}`) ? true : false;
     const isAutheticated = localStorage.getItem(AppsConst.token) ? true : false;
-    console.log(currentUrl);
-    console.log(isCommonRoute);
 
+    
     return (
         <>
             {
@@ -224,8 +228,7 @@ const App = () => {
                     {currentUrl !== 'movie'&&
                     <PopularMovie></PopularMovie>
                     }
-                    
-                    
+                
                 </>
             }
 

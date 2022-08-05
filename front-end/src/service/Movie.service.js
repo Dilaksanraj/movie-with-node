@@ -59,3 +59,4 @@ export const createMovie = async (data) => {
         return false
     }
 }
+

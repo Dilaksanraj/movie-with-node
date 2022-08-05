@@ -10,7 +10,7 @@ const Response = require('../share/Response')
 const Router = express.Router()
 
 Router.post('/create-movie', async (req, res) => {
-    console.log(req.body);
+    
     const release_date = req.body.release_date;
     const poster = req.body.poster;
     const title = req.body.title;

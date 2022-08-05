@@ -16,4 +16,5 @@ export class AppsConst {
 
     static isAuth = 'isAuth';
     static token = 'token';
+    static authId = 'authId';
 }

@@ -4,12 +4,18 @@ import classNames from 'classnames';
 import { AppsConst } from './shared/AppsConst';
 import EmptyPage from './pages/EmptyPage';
 import { NavLink } from 'react-router-dom';
-import { clearAuth } from './common/service/auth.service';
+import { clearAuth, logout } from './common/service/auth.service';
 
 
 export const AppTopbar = (props) => {
 
     const isAuth = localStorage.getItem(AppsConst.token) ? true : false;
+
+    async function logoutHndle(){
+
+        const response = logout();
+        localStorage.clear();
+    }
 
     return (
         <>
@@ -35,9 +41,10 @@ export const AppTopbar = (props) => {
                         !isAuth &&
                         <>
                             <li>
-                                <button className="p-link layout-topbar-button" onClick={props.onMobileSubTopbarMenuClick}>
+                                <button className="p-link layout-topbar-button" onClick={props.onMobileSubTopbarMenuClick} style={{width: '100px', fontSize: '14px'}}>
                                     <NavLink className="p-ripple" activeClassName="router-link-active router-link-exact-active" to='/login'>
-                                        <i className="pi pi-user" />
+                                        {/* <i className="pi pi-user" /> */}
+                                        Login
                                         <span>Login</span>
                                     </NavLink>
 
@@ -49,19 +56,21 @@ export const AppTopbar = (props) => {
                         isAuth &&
                         <>
                             <li>
-                                <button className="p-link layout-topbar-button" onClick={props.onMobileSubTopbarMenuClick}>
-                                    <NavLink className="p-ripple" activeClassName="router-link-active router-link-exact-active" to='/home'>
-                                        <i className="pi pi-star" />
+                                <button className="p-link layout-topbar-button" onClick={props.onMobileSubTopbarMenuClick} style={{width: '100px', fontSize: '14px'}}>
+                                    <NavLink className="" activeClassName="router-link-active router-link-exact-active" to='/home'>
+                                        My movie
+                                        {/* <i className="pi pi-star" /> */}
                                         <span>Events</span>
                                     </NavLink>
 
                                 </button>
                             </li>
                             <li>
-                                <button className="p-link layout-topbar-button" onClick={props.onMobileSubTopbarMenuClick}>
+                                <button className="p-link layout-topbar-button" onClick={props.onMobileSubTopbarMenuClick} style={{width: '100px', fontSize: '14px'}}>
 
-                                    <NavLink className="p-ripple" activeClassName="router-link-active router-link-exact-active" to='/home'>
-                                        <i className="pi pi-cog" />
+                                    <NavLink className="" activeClassName="router-link-active router-link-exact-active" to='/home'>
+                                    Settings
+                                        {/* <i className="pi pi-cog" /> */}
                                         <span>Settings</span>
                                     </NavLink>
 
@@ -69,9 +78,9 @@ export const AppTopbar = (props) => {
                             </li>
 
                             <li>
-                                <button className="p-link layout-topbar-button" onClick={clearAuth}>
-                                    <NavLink className="p-ripple" activeClassName="router-link-active router-link-exact-active" to='/login'>
-                                        <i className="pi pi-lock" />
+                                <button className="p-link layout-topbar-button" onClick={clearAuth} style={{width: '100px', fontSize: '14px'}}>
+                                    <NavLink className="" activeClassName="router-link-active router-link-exact-active" to='/login' onClick={logoutHndle} >
+                                    Logout
                                         <span>Logout</span>
                                     </NavLink>
 

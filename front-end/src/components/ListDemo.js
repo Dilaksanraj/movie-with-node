@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
@@ -9,6 +9,7 @@ import { ProductService } from '../service/ProductService';
 import { getAllMovieList } from '../service/Movie.service';
 import { InputText } from 'primereact/inputtext';
 import { useHistory } from 'react-router-dom';
+import { LoadingContaxt } from '../shared/context/common.context';
 
 const PopularMovie = () => {
 
@@ -16,14 +17,20 @@ const PopularMovie = () => {
     let [movies, setMovies] = useState([])
     const [MovieList, setMovieList] = useState([])
     const [searchInput, setSearchInput] = useState([])
+    const [loading, setLoading] = useState(false)
     const history = useHistory()
 
     useEffect(() => {
 
+        setLoading(true);
         const getAllMovies = async () => {
             const movie = await getAllMovieList();
             setMovies(movie);
             setMovieList(movie)
+
+            setTimeout(() => {
+                setLoading(false)
+              }, 1000)
         }
         getAllMovies()
     }, []);
@@ -135,8 +142,8 @@ const PopularMovie = () => {
             <div className="col-12 lg:col-2 md:col-3 sm:col-6" style={{ cursor: 'pointer' }} onClick={event => {
                 history.push({
                     pathname: `/movie/${data._id}`,
-                    state:data
-                    
+                    state: data
+
                 })
                 // history.push('/movie')
 
@@ -162,7 +169,7 @@ const PopularMovie = () => {
             <div className="col-12 lg:col-2 md:col-3 sm:col-6" style={{ cursor: 'pointer' }} onClick={event => {
                 history.push({
                     pathname: `/movie/${data._id}`,
-                    state:data
+                    state: data
                 })
             }}>
                 <div className="mt-3 ml-3 mr-3 border-1 surface-border" style={{ boxShadow: 'none!important' }}>
@@ -196,28 +203,28 @@ const PopularMovie = () => {
         return dataviewGridItemRecommendation(data);
     };
 
-    const  emptyMessage = () => {
+    const emptyMessage = () => {
         return (
-            
-                <div>
-                    <h1>
-                        No data found
-                    </h1>
-                </div>
-            
+
+            <div>
+                <h1>
+                    No data found
+                </h1>
+            </div>
+
         );
     }
 
     return (
         <div className="grid list-demo" style={{ marginRight: '0px' }}>
-            <div className="col-12">
-                <div className="card">
-                    <h5>DataView</h5>
-                    <DataView value={movies} layout={layout} paginator rows={100} sortOrder={sortOrder} sortField={sortField} itemTemplate={itemTemplate} header={dataviewHeader} emptyMessage= {emptyMessage}></DataView>
-                    <DataView value={movies} layout={layout} paginator rows={100} sortOrder={sortOrder} sortField={sortField} itemTemplate={itemTemplateRec} header={dataviewHeaderRec}></DataView>
-                </div>
+                <div className="col-12">
+                    <div className="card">
+                        <h5>DataView</h5>
+                        <DataView value={movies} layout={layout} paginator rows={100} sortOrder={sortOrder} sortField={sortField} itemTemplate={itemTemplate} header={dataviewHeader}></DataView>
+                        <DataView value={movies} layout={layout} paginator rows={100} sortOrder={sortOrder} sortField={sortField} itemTemplate={itemTemplateRec} header={dataviewHeaderRec}></DataView>
+                    </div>
 
-            </div>
+                </div>
         </div>
     )
 }
