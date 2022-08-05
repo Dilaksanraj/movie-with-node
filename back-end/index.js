@@ -45,7 +45,7 @@ app.use('/movie',MovieApi)
 app.use('/comment',CommentsApi)
 app.use('/rate',RateApi)
 
-const PORT = 4500
-app.listen(PORT, () => {
-    console.log('Server running on http://127.0.0.1:' + PORT)
+
+app.listen(process.env.PORT, () => {
+    console.log('Server running on http://127.0.0.1:' + process.env.PORT)
 })

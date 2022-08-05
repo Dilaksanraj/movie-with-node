@@ -11,10 +11,10 @@ import { ContextMenu } from 'primereact/contextmenu';
 import { MegaMenu } from 'primereact/megamenu';
 import { PanelMenu } from 'primereact/panelmenu';
 import { Route, useHistory, useLocation } from 'react-router-dom';
-import { PersonalDemo } from '../components/menu/PersonalDemo';
-import { ConfirmationDemo } from '../components/menu/ConfirmationDemo';
-import { PaymentDemo } from '../components/menu/PaymentDemo';
-import { SeatDemo } from '../components/menu/SeatDemo';
+import { PersonalDemo } from './menu/PersonalDemo';
+import { ConfirmationDemo } from './menu/ConfirmationDemo';
+import { PaymentDemo } from './menu/PaymentDemo';
+import { SeatDemo } from './menu/SeatDemo';
 
 const MenuDemo = () => {
     const [activeIndex, setActiveIndex] = useState(0);
