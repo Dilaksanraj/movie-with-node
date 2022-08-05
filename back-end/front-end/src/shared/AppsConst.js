@@ -10,7 +10,7 @@ export class AppsConst {
         {name: 'Movie', url: '/movie'}
     ];
 
-    static baseUrl = 'http://127.0.0.1:4500';
+    static baseUrl = 'https://movie-with-node.herokuapp.com';
 
     static mediaType = {Video:'VIDEO', img:'IMG'}
 
