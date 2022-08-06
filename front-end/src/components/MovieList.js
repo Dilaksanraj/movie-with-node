@@ -21,12 +21,8 @@ import { InputTextarea } from 'primereact/inputtextarea';
 
 const MovieListAdmin = () => {
     const [customers1, setCustomers1] = useState(null);
-    const [customers2, setCustomers2] = useState([]);
-    const [customers3, setCustomers3] = useState([]);
     const [filters1, setFilters1] = useState(null);
     const [loading1, setLoading1] = useState(true);
-    const [loading2, setLoading2] = useState(true);
-    const [idFrozen, setIdFrozen] = useState(false);
     const [displayBasic, setDisplayBasic] = useState(false);
     const [date, setDate] = useState('');
     const [title, setTitle] = useState('');
@@ -35,24 +31,8 @@ const MovieListAdmin = () => {
     const [desc, setDesc] = useState('');
     
 
-    const representatives = [
-        { name: "Amy Elsner", image: 'amyelsner.png' },
-        { name: "Anna Fali", image: 'annafali.png' },
-        { name: "Asiya Javayant", image: 'asiyajavayant.png' },
-        { name: "Bernardo Dominic", image: 'bernardodominic.png' },
-        { name: "Elwin Sharvill", image: 'elwinsharvill.png' },
-        { name: "Ioni Bowcher", image: 'ionibowcher.png' },
-        { name: "Ivan Magalhaes", image: 'ivanmagalhaes.png' },
-        { name: "Onyama Limba", image: 'onyamalimba.png' },
-        { name: "Stephen Shaw", image: 'stephenshaw.png' },
-        { name: "XuXue Feng", image: 'xuxuefeng.png' }
-    ];
 
-    const statuses = [
-        'unqualified', 'qualified', 'new', 'negotiation', 'renewal', 'proposal'
-    ];
 
-    const customerService = new CustomerService();
 
     useEffect(() => {
         setLoading1(true);
@@ -63,35 +43,11 @@ const MovieListAdmin = () => {
             setCustomers1(movie);
         }
         getAllMovies();
-        customerService.getCustomersLarge().then(data => { setCustomers2(getCustomers(data)) });
-        customerService.getCustomersMedium().then(data => setCustomers3(data));
 
-        initFilters1();
         setLoading1(false);
+
     }, []);
 
-
-    const getCustomers = (data) => {
-        return [...data || []].map(d => {
-            d.date = new Date(d.date);
-            return d;
-        });
-    }
-
-
-    const initFilters1 = () => {
-        setFilters1({
-            'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
-            'name': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-            'country.name': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-            'representative': { value: null, matchMode: FilterMatchMode.IN },
-            'date': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
-            'balance': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-            'status': { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-            'activity': { value: null, matchMode: FilterMatchMode.BETWEEN },
-            'verified': { value: null, matchMode: FilterMatchMode.EQUALS }
-        });
-    }
 
 
     const titleBodyTemplate = (rowData) => {
@@ -129,14 +85,6 @@ const MovieListAdmin = () => {
 
     const basicDialogFooter = <><Button type="button" label="Save" onClick={handleSubmit} icon="pi pi-plus" className="p-button-primary" /> <Button type="button" label="close" onClick={() => setDisplayBasic(false)} icon="pi pi-minus" className="p-button-danger" /></>;
 
-    async function unSubscribeAll(){
-
-        setDate('');
-        setTitle('');
-        setPoster('');
-        setDesc('');
-        setLink('');
-    }
 
     async function handleSubmit(event) {
 
@@ -170,7 +118,7 @@ const MovieListAdmin = () => {
         setLink('');
     };
 
-    const  emptyMessage = (rowData) => {
+    const  emptyMessage = () => {
         return (
             
                 <div>
@@ -235,7 +183,7 @@ const MovieListAdmin = () => {
                         <div className="font-bold text-2xl">Manage Movie</div>
                     </div>
                     <DataTable value={customers1} paginator className="p-datatable-gridlines" showGridlines rows={100}
-                        dataKey="id" filters={filters1} filterDisplay="menu" loading={loading1} responsiveLayout="scroll"
+                        dataKey="id"  loading={loading1} responsiveLayout="scroll"
                         emptyMessage= {emptyMessage}>
                         <Column field="name" header="Title" style={{ minWidth: '12rem' }} body={titleBodyTemplate} />
                         <Column header="Poster" style={{ minWidth: '12rem' }} body={representativeBodyTemplate}
