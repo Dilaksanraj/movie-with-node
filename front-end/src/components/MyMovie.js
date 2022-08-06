@@ -5,7 +5,6 @@ import { Dropdown } from 'primereact/dropdown';
 import { Rating } from 'primereact/rating';
 import { PickList } from 'primereact/picklist';
 import { OrderList } from 'primereact/orderlist';
-import { ProductService } from '../service/ProductService';
 import { getAllMovieList } from '../service/Movie.service';
 import { InputText } from 'primereact/inputtext';
 import { useHistory } from 'react-router-dom';

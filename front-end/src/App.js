@@ -9,32 +9,10 @@ import { AppMenu } from './AppMenu';
 import { AppConfig } from './AppConfig';
 
 import Dashboard from './components/Dashboard';
-import ButtonDemo from './components/ButtonDemo';
-import ChartDemo from './components/ChartDemo';
-import Documentation from './components/Documentation';
-import FileDemo from './components/FileDemo';
-import FloatLabelDemo from './components/FloatLabelDemo';
-import FormLayoutDemo from './components/FormLayoutDemo';
-import InputDemo from './components/InputDemo';
 import PopularMovie from './components/ListDemo';
-import MenuDemo from './components/MenuDemo';
-import MessagesDemo from './components/MessagesDemo';
-import MiscDemo from './components/MiscDemo';
-import OverlayDemo from './components/OverlayDemo';
-import MediaDemo from './components/MediaDemo';
-import PanelDemo from './components/PanelDemo';
-import TableDemo from './components/TableDemo';
-import TreeDemo from './components/TreeDemo';
-import InvalidStateDemo from './components/InvalidStateDemo';
-import BlocksDemo from './components/BlocksDemo';
-import IconsDemo from './components/IconsDemo';
-
 import MovieListAdmin from './components/MovieList';
 import UserListAdmin from './components/UserList';
 
-import Crud from './pages/Crud';
-import EmptyPage from './pages/EmptyPage';
-import TimelineDemo from './pages/TimelineDemo';
 
 import PrimeReact from 'primereact/api';
 import { Tooltip } from 'primereact/tooltip';
@@ -54,8 +32,6 @@ import { AppsConst } from './shared/AppsConst';
 import Home from './common/Home';
 import MovieDetailsView from './components/MovieDetailsView';
 import './assets/css/common.css';
-import { LoadingContaxt } from './shared/context/common.context';
-import MyMovie from './components/MyMovie';
 
 
 const App = () => {
@@ -266,29 +242,6 @@ const App = () => {
                 <div className="layout-main-container">
                     <div className="layout-main">
                         <Route path="/dashboard" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
-                        <Route path="/formlayout" component={FormLayoutDemo} />
-                        <Route path="/input" component={InputDemo} />
-                        <Route path="/floatlabel" component={FloatLabelDemo} />
-                        <Route path="/invalidstate" component={InvalidStateDemo} />
-                        <Route path="/button" component={ButtonDemo} />
-                        <Route path="/table" component={TableDemo} />
-                        <Route path="/list" component={PopularMovie} />
-                        <Route path="/tree" component={TreeDemo} />
-                        <Route path="/panel" component={PanelDemo} />
-                        <Route path="/overlay" component={OverlayDemo} />
-                        <Route path="/media" component={MediaDemo} />
-                        <Route path="/menu" component={MenuDemo} />
-                        <Route path="/messages" component={MessagesDemo} />
-                        <Route path="/blocks" component={BlocksDemo} />
-                        <Route path="/icons" component={IconsDemo} />
-                        <Route path="/file" component={FileDemo} />
-                        <Route path="/chart" render={() => <ChartDemo colorMode={layoutColorMode} location={location} />} />
-                        <Route path="/misc" component={MiscDemo} />
-                        <Route path="/timeline" component={TimelineDemo} />
-                        <Route path="/crud" component={Crud} />
-                        <Route path="/empty" component={EmptyPage} />
-                        <Route path="/documentation" component={Documentation} />
-
                         {/* admin */}
                         <Route path="/manage-movie" component={MovieListAdmin} />
                         <Route path="/manage-user" component={UserListAdmin} />

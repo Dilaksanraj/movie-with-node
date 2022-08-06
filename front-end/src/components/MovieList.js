@@ -14,7 +14,6 @@ import { TriStateCheckbox } from 'primereact/tristatecheckbox';
 import { ToggleButton } from 'primereact/togglebutton';
 import { Rating } from 'primereact/rating';
 import { CustomerService } from '../service/CustomerService';
-import { ProductService } from '../service/ProductService';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { createMovie, getAllMovieList } from '../service/Movie.service';
@@ -28,8 +27,6 @@ const MovieListAdmin = () => {
     const [loading1, setLoading1] = useState(true);
     const [loading2, setLoading2] = useState(true);
     const [idFrozen, setIdFrozen] = useState(false);
-    const [products, setProducts] = useState([]);
-    const [expandedRows, setExpandedRows] = useState(null);
     const [displayBasic, setDisplayBasic] = useState(false);
     const [date, setDate] = useState('');
     const [title, setTitle] = useState('');
@@ -56,7 +53,6 @@ const MovieListAdmin = () => {
     ];
 
     const customerService = new CustomerService();
-    const productService = new ProductService();
 
     useEffect(() => {
         setLoading1(true);
@@ -69,7 +65,6 @@ const MovieListAdmin = () => {
         getAllMovies();
         customerService.getCustomersLarge().then(data => { setCustomers2(getCustomers(data)) });
         customerService.getCustomersMedium().then(data => setCustomers3(data));
-        productService.getProductsWithOrdersSmall().then(data => setProducts(data));
 
         initFilters1();
         setLoading1(false);

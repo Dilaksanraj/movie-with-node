@@ -4,7 +4,6 @@ import { Button } from 'primereact/button';
 import { Chart } from 'primereact/chart';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { ProductService } from '../service/ProductService';
 import { getAllMovieList } from '../service/Movie.service';
 
 const lineData = {
@@ -30,8 +29,6 @@ const lineData = {
 };
 
 const Dashboard = (props) => {
-    const [products, setProducts] = useState(null);
-    const menu1 = useRef(null);
     const menu2 = useRef(null);
     const [lineOptions, setLineOptions] = useState(null);
     let [movies, setMovies] = useState([])
@@ -108,11 +105,6 @@ const Dashboard = (props) => {
 
         setLineOptions(lineOptions)
     }
-
-    useEffect(() => {
-        const productService = new ProductService();
-        productService.getProductsSmall().then(data => setProducts(data));
-    }, []);
 
     useEffect(() => {
         if (props.colorMode === 'light') {

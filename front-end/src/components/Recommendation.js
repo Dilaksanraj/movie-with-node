@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
-import { Button } from 'primereact/button';
-import { Dropdown } from 'primereact/dropdown';
+import { DataView } from 'primereact/dataview';
 import { Rating } from 'primereact/rating';
-import { PickList } from 'primereact/picklist';
-import { OrderList } from 'primereact/orderlist';
-import { ProductService } from '../service/ProductService';
 import { getAllMovieList } from '../service/Movie.service';
 import { InputText } from 'primereact/inputtext';
 
@@ -33,10 +28,6 @@ const RecommendationMovie = () => {
     const [sortField, setSortField] = useState(null);
 
 
-    useEffect(() => {
-        const productService = new ProductService();
-        productService.getProducts().then(data => setDataviewValue(data));
-    }, []);
 
     const dataviewHeader = (
         <div className="grid grid-nogutter mb-3 mt-3">

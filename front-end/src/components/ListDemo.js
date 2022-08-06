@@ -3,9 +3,6 @@ import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { Rating } from 'primereact/rating';
-import { PickList } from 'primereact/picklist';
-import { OrderList } from 'primereact/orderlist';
-import { ProductService } from '../service/ProductService';
 import { getAllMovieList } from '../service/Movie.service';
 import { InputText } from 'primereact/inputtext';
 import { useHistory } from 'react-router-dom';
@@ -41,17 +38,9 @@ const PopularMovie = () => {
         getAllMovies()
     }, []);
 
-
-    const [dataviewValue, setDataviewValue] = useState(null);
     const [layout, setLayout] = useState('grid');
     const [sortOrder, setSortOrder] = useState(null);
     const [sortField, setSortField] = useState(null);
-
-
-    useEffect(() => {
-        const productService = new ProductService();
-        productService.getProducts().then(data => setDataviewValue(data));
-    }, []);
 
     const dataviewHeader = (
         <div className="grid grid-nogutter mb-3 mt-3">

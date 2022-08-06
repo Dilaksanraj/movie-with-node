@@ -14,17 +14,16 @@ import { TriStateCheckbox } from 'primereact/tristatecheckbox';
 import { ToggleButton } from 'primereact/togglebutton';
 import { Rating } from 'primereact/rating';
 import { CustomerService } from '../service/CustomerService';
-import { ProductService } from '../service/ProductService';
 
 const UserListAdmin = () => {
     const [customers1, setCustomers1] = useState(null);
+
     const [customers2, setCustomers2] = useState([]);
     const [customers3, setCustomers3] = useState([]);
     const [filters1, setFilters1] = useState(null);
     const [loading1, setLoading1] = useState(true);
-    const [loading2, setLoading2] = useState(true);
-    const [idFrozen, setIdFrozen] = useState(false);
     const [products, setProducts] = useState([]);
+
     const [expandedRows, setExpandedRows] = useState(null);
 
     const representatives = [
@@ -45,26 +44,15 @@ const UserListAdmin = () => {
     ];
 
     const customerService = new CustomerService();
-    const productService = new ProductService();
 
     useEffect(() => {
-        setLoading2(true);
-
-        customerService.getCustomersLarge().then(data => { setCustomers1(getCustomers(data)); setLoading1(false) });
-        customerService.getCustomersLarge().then(data => { setCustomers2(getCustomers(data)); setLoading2(false); });
+        customerService.getCustomersLarge().then(data => { setCustomers1(getCustomers(data));  });
+        customerService.getCustomersLarge().then(data => { setCustomers2(getCustomers(data));  });
         customerService.getCustomersMedium().then(data => setCustomers3(data));
-        productService.getProductsWithOrdersSmall().then(data => setProducts(data));
 
         initFilters1();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const balanceTemplate = (rowData) => {
-        return (
-            <span className="text-bold">
-                {formatCurrency(rowData.balance)}
-            </span>
-        )
-    }
 
     const getCustomers = (data) => {
         return [...data || []].map(d => {
@@ -219,62 +207,13 @@ const UserListAdmin = () => {
         return <Button icon="pi pi-search" />;
     }
 
-    const imageBodyTemplate = (rowData) => {
-        return <img src={`images/product/${rowData.image}`} onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={rowData.image} className="shadow-2" width={100} />;
-    }
 
-    const priceBodyTemplate = (rowData) => {
-        return formatCurrency(rowData.price);
-    }
 
-    const ratingBodyTemplate = (rowData) => {
-        return <Rating value={rowData.rating} readOnly cancel={false} />;
-    }
 
-    const statusBodyTemplate2 = (rowData) => {
-        return <span className={`product-badge status-${rowData.inventoryStatus.toLowerCase()}`}>{rowData.inventoryStatus}</span>;
-    }
 
-    const rowExpansionTemplate = (data) => {
-        return (
-            <div className="orders-subtable">
-                <h5>Orders for {data.name}</h5>
-                <DataTable value={data.orders} responsiveLayout="scroll">
-                    <Column field="id" header="Id" sortable></Column>
-                    <Column field="customer" header="Customer" sortable></Column>
-                    <Column field="date" header="Date" sortable></Column>
-                    <Column field="amount" header="Amount" body={amountBodyTemplate} sortable></Column>
-                    <Column field="status" header="Status" body={statusOrderBodyTemplate} sortable></Column>
-                    <Column headerStyle={{ width: '4rem' }} body={searchBodyTemplate}></Column>
-                </DataTable>
-            </div>
-        );
-    }
 
-    const header = (
-        <div className="table-header-container">
-            <Button icon="pi pi-plus" label="Expand All" onClick={expandAll} className="mr-2 mb-2" />
-            <Button icon="pi pi-minus" label="Collapse All" onClick={collapseAll} className="mb-2" />
-        </div>
-    );
 
-    const headerTemplate = (data) => {
-        return (
-            <React.Fragment>
-                <img alt={data.representative.name} src={`images/avatar/${data.representative.image}`} width="32" style={{ verticalAlign: 'middle' }} />
-                <span className="image-text font-bold">{data.representative.name}</span>
-            </React.Fragment>
-        );
-    }
 
-    const footerTemplate = (data) => {
-        return (
-            <React.Fragment>
-                <td colSpan="4" style={{ textAlign: 'right' }} className="text-bold pr-6">Total Customers</td>
-                <td>{calculateCustomerTotal(data.representative.name)}</td>
-            </React.Fragment>
-        );
-    }
 
     const calculateCustomerTotal = (name) => {
         let total = 0;
