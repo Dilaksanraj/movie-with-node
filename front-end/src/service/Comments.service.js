@@ -43,3 +43,23 @@ export const getAllMovieComments = async (index) => {
         return false
     }
 }
+
+export const deleteComments = async (index) => {
+    try { 
+
+        const res = await axios.get(`${AppsConst.baseUrl}/comment/delete-comments`,{ params: { index: index } }, {
+            withCredentials: true
+        })
+        return res.data.data
+
+    } catch (error) {
+        if ((error).response?.status === 500) {
+
+            console.error(error.response?.data?.msg)
+        } else {
+
+            console.error(error)
+        }
+        return false
+    }
+}

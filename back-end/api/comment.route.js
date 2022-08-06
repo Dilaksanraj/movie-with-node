@@ -84,4 +84,47 @@ Router.get('/get-all-comments', async (req, res) => {
 
 })
 
+
+
+Router.get('/delete-comments', async (req, res) => {
+
+    try {
+
+        const id = req.query.index;
+       
+        const deleteComments = await commentModel.findByIdAndDelete(id);
+
+        const comments = await commentModel.find({}).populate('user_id')
+
+        if (!comments) {
+
+            return res.status(AppsConst.AppsConst.RequestType.CODE_200).json({
+                message: 'No data',
+                data: []
+
+            })
+        }
+
+        const commentsArray = [];
+        
+        return res.status(AppsConst.AppsConst.RequestType.CODE_200).json({
+            message: Response.success_request,
+            data: comments
+
+        })
+
+    }
+    catch (err) {
+
+        console.log(err);
+        return res.status(AppsConst.AppsConst.RequestType.CODE_500).json({
+            message: err.message,
+            data: []
+
+        })
+
+    }
+
+})
+
 module.exports = Router

@@ -3,7 +3,7 @@ import { Button } from 'primereact/button';
 import BlockViewer from '../BlockViewer';
 import { useHistory, useParams } from 'react-router-dom';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { createComments, getAllComments, getAllMovieComments } from '../service/Comments.service';
+import { createComments, deleteComments, getAllComments, getAllMovieComments } from '../service/Comments.service';
 import { AppsConst } from '../shared/AppsConst';
 import { getAllMovieList } from '../service/Movie.service';
 import { Rating } from 'primereact/rating';
@@ -44,7 +44,7 @@ const MovieDetailsView = () => {
             const comments = await getAllMovieComments(currentMovieId);
 
             // filter comment for current movie
-            const filterComment = comments.filter(function(item){
+            const filterComment = comments.filter(function (item) {
                 return item.movie_id == currentMovieId
             });
             setAllComments(filterComment);
@@ -56,7 +56,7 @@ const MovieDetailsView = () => {
             const comments = await getAllMovieList();
 
             // filter comment for current movie
-            const currentMovie = comments.find(function(item){
+            const currentMovie = comments.find(function (item) {
                 return item._id == currentMovieId
             });
 
@@ -83,13 +83,35 @@ const MovieDetailsView = () => {
 
         if (res.data) {
 
-            const filterComment = res.data.filter(function(item){
+            const filterComment = res.data.filter(function (item) {
                 return item.movie_id == currentMovieId
             });
 
             setAllComments(filterComment);
 
         } else {
+            console.log('error');
+        }
+
+        setComment('');
+    };
+
+    async function deleteComment( data) {
+
+        const res = await deleteComments(data);
+
+        console.log(res);
+
+        if (res) {
+
+            const filterComment = res.filter(function (item) {
+                return item.movie_id == currentMovieId
+            });
+
+            setAllComments(filterComment);
+
+        } else {
+
             console.log('error');
         }
 
@@ -124,17 +146,17 @@ const MovieDetailsView = () => {
                             <div className="col-12 md:col-8 p-6 text-center md:text-left flex align-items-center ">
                                 <section>
                                     <div className="text-6xl text-primary font-bold mb-3">{movie.title}</div>
-                                    <p style={{fontSize: '12px'}}>{movie.desc}</p>
+                                    <p style={{ fontSize: '12px' }}>{movie.desc}</p>
                                     <Button label="Learn More" type="button" className="mr-3 p-button-raised"></Button>
                                     <Button label="Watch video" type="button" className="p-button-outlined"></Button>
 
-                                    <div style={{margin: '12px', display:'flex'}}>
-                                    <Rating value={ratingValue} onChange={(e) => setRatingValue(e.value)} />
-                                    <a style={{marginLeft: '12px', cursor:'pointer'}}>update</a>
+                                    <div style={{ margin: '12px', display: 'flex' }}>
+                                        <Rating value={ratingValue} onChange={(e) => setRatingValue(e.value)} />
+                                        <a style={{ marginLeft: '12px', cursor: 'pointer' }}>update</a>
                                     </div>
                                 </section>
 
-                                
+
 
                             </div>
                             <div className="col-12 md:col-4 overflow-hidden">
@@ -149,19 +171,26 @@ const MovieDetailsView = () => {
                         {allComments.map(element =>
                             <div key={element._id} style={{ borderWidth: '3px', borderColor: 'darkgray', padding: '24px', borderRadius: '20px', fontSize: '18px', margin: '24px', background: '#ffffff' }}>
                                 <img src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png' style={{ width: '30px', height: '30px', float: 'left' }} />
-                                
-                                <p style={{ paddingLeft: '48px', fontSize: '14px'}}>
+
+                                <p style={{ paddingLeft: '48px', fontSize: '14px' }}>
                                     <a>{element.user_id.first_name}</a>
                                 </p>
-                                
+
                                 <p style={{ paddingLeft: '48px', marginBottom: '0px' }}>
                                     {element.comment}
                                 </p>
-                                <div style={{marginLeft: '42px'}}>
-                                <span style={{ fontSize: '12px', margin: '6px' }}>{`${new Date(element.created_at).getDate()}-${new Date(element.created_at).getMonth()}-${new Date(element.created_at).getFullYear()}`}</span>
-                                <span style={{ fontSize: '16px', margin: '6px' }}><a>like</a></span>
-                                <span style={{ fontSize: '16px', margin: '6px' }}><a>replay</a></span>
-                                <span style={{ fontSize: '16px', margin: '6px' , color:'red'}}><a style={{color:'red'}}>{element.user_id._id == localStorage.getItem(AppsConst.authId)? 'delete' : ''}</a></span>
+                                <div style={{ marginLeft: '42px' }}>
+                                    <span style={{ fontSize: '12px', margin: '6px' }}>{`${new Date(element.created_at).getDate()}-${new Date(element.created_at).getMonth()}-${new Date(element.created_at).getFullYear()}`}</span>
+                                    <span style={{ fontSize: '16px', margin: '6px' }}><a>like</a></span>
+                                    <span style={{ fontSize: '16px', margin: '6px' }}><a>replay</a></span>
+                                    <span style={{ fontSize: '16px', margin: '6px', color: 'red', cursor:'pointer' }}><a style={{ color: 'red' }} 
+                                    onClick={() => {
+
+                                        deleteComment(element._id)
+                                        
+                                    }}>
+                                        {element.user_id._id == localStorage.getItem(AppsConst.authId) ? 'delete' : ''}
+                                    </a></span>
                                 </div>
                             </div>
 
@@ -172,9 +201,9 @@ const MovieDetailsView = () => {
                 </div>
 
                 <div className='col-12'>
-                    <div className="col-6" style={{ marginLeft: '24px'}}>
+                    <div className="col-6" style={{ marginLeft: '24px' }}>
 
-                        <InputTextarea placeholder="Your comment" autoResize rows="3" cols="30" className="w-full mb-3" style={{height:'70px', fontSize:'18px' }}
+                        <InputTextarea placeholder="Your comment" autoResize rows="3" cols="30" className="w-full mb-3" style={{ height: '70px', fontSize: '18px' }}
                             onChange={event => {
                                 setComment(event.target.value)
                             }}
